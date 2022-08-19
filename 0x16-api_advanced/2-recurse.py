@@ -1,31 +1,29 @@
 #!/usr/bin/python3
 """
-Contains the recurse function
+recursive function that queries the Reddit API and returns a list
+containing the titles of all hot articles for a given subreddit
 """
-
 import requests
 
 
-def recurse(subreddit, hot_list=[], after=None):
-    """returns a list of all hot post titles for a given subreddit"""
-    if subreddit is None or type(subreddit) is not str:
+def recurse(subreddit, hot_list=[], count=0, next_page=None):
+    """return list containing titles of all hot articles"""
+    headers = {
+        "User-Agent": "0x16. API_advanced-e_kiminza"
+    }
+    url = "https://www.reddit.com/r/{}/hot/.json".format(subreddit)
+    params = {"limit": 50, "next_page": next_page, "count": count}
+    response = requests.get(url, headers=headers,
+                            params=params, allow_redirects=False)
+    if response.status_code != 200:
         return None
-    r = requests.get('http://www.reddit.com/r/{}/hot.json'.format(subreddit),
-                     headers={'User-Agent': 'Python/requests:APIproject:\
-                     v1.0.0 (by /u/aaorrico23)'},
-                     params={'after': after}).json()
-    after = r.get('data', {}).get('after', None)
-    posts = r.get('data', {}).get('children', None)
-    if posts is None or (len(posts) > 0 and posts[0].get('kind') != 't3'):
-        if len(hot_list) == 0:
-            return None
-        return hot_list
-    else:
-        for post in posts:
-            hot_list.append(post.get('data', {}).get('title', None))
-    if after is None:
-        if len(hot_list) == 0:
-            return None
-        return hot_list
-    else:
-        return recurse(subreddit, hot_list, after)
+    response_ = response.json().get("data")
+    next_page = response_.get("next_page")
+    count += response_.get("dist")
+    children = response_.get("children")
+    for child in children:
+        title = child.get("data").get("title")
+        hot_list.append(title)
+    if next_page is not None:
+        return recurse(subreddit, hot_list, count, next_page)
+    return hot_list

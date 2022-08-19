@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# displays Holberton School 10 times
-
-COUNTER=1
-while [ "$COUNTER" -le 10 ]; do
-	echo "Holberton School"
-	let COUNTER=COUNTER+1
-done
+# prints 'holberton school' 10 times using while loop
+string_a='Holberton School'
+counter=0
+while [ $counter -lt 10 ]; do echo "$string_a"; (( counter+=1 )); done

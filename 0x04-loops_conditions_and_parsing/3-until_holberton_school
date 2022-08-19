@@ -1,8 +1,5 @@
 #!/usr/bin/env bash
-# displays Holberton School 10 times
-
-COUNTER=0
-until [ "$COUNTER" -eq 10 ]; do
-	echo "Holberton School"
-	let COUNTER=COUNTER+1
-done
+# Displays 'Holberton School 10 times using until
+string_a='Holberton School'
+counter=10
+until [ $counter -lt 1 ]; do echo "$string_a"; (( counter-=1 )); done

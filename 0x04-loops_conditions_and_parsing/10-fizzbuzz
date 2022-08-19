@@ -1,15 +1,17 @@
 #!/usr/bin/env bash
-# FizzBuzz!!
-
-for i in $(seq 1 100);
-do
-    if [ $((i % 15)) -eq 0 ]; then
-	echo "FizzBuzz"
-    elif [ $((i % 3)) -eq 0 ]; then
-	echo "Fizz"
-    elif [ $((i % 5)) -eq 0 ]; then
-	echo "Buzz"
-    else
-	echo "$i"
-    fi
+# displays numbers from 1 to 100
+counter=0
+while [ $counter -lt 100 ]; do
+	(( counter+=1 ))
+	if (( counter % 3 == 0 )) && (( counter % 5 == 0 )); then
+		echo "FizzBuzz"
+	continue
+	elif (( counter % 3 == 0 )); then
+		echo "Fizz"
+	continue
+	elif (( counter % 5 == 0 )); then
+		echo "Buzz"
+	continue
+	fi
+	echo "$counter"
 done
